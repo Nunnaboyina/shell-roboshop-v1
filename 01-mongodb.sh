@@ -36,7 +36,7 @@ systemctl enable mongod &>>$log_file
 systemctl start mongod &>>$log_file
 validate $? "Starting and Enabling mongodb"
 
-sed -i 's/127.0.0.1/0.0.0.0' /etc/mongod.conf
+sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf
 validate $? "Updating the listening address"
 
 systemctl restart mongod
