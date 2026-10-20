@@ -21,6 +21,7 @@ timestamp(){
 validate(){
     if [ $1 -ne 0 ]; then 
         echo -e "$(timestamp) [ERROR] ${2} is ${R}FAILED${N}" | tee -a $log_file
+        exit 1
     else
         echo -e "$(timestamp) [INFO] ${2} is ${G}SUCCESSFUL${N}" | tee -a $log_file
     fi
