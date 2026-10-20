@@ -16,7 +16,6 @@ fi
 mkdir -p $log_folder
 
 
-
 timestamp(){
     date +"%F %T"
 }
@@ -32,8 +31,8 @@ validate(){
 
 echo "$(timestamp) [INFO] =====Script Execution Started===" | tee -a $log_file
 
-#dnf module disable redis -y &>> $log_file
-#dnf module enable redis:7 -y &>> $log_file
+dnf module disable redis -y &>> $log_file
+dnf module enable redis:7 -y &>> $log_file
 dnf install redis -y &>> $log_file
 validate $? "Installing redis"
 
