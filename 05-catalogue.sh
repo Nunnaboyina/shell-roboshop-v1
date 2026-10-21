@@ -37,41 +37,41 @@ dnf module enable nodejs:24 -y &>> $log_file
 dnf install nodejs -y &>> $log_file
 validate $? "Installing nodejs"
 
-useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
-validate $? "Addind System User"
+#useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
+#validate $? "Addind System User"
 
-rm -rf /app
-mkdir -p /app
-curl -L -o /tmp/catalogue.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/catalogue-v4.zip
-validate $? "Downloading Catalogue"
+#rm -rf /app
+#mkdir -p /app
+#curl -L -o /tmp/catalogue.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/catalogue-v4.zip
+#validate $? "Downloading Catalogue"
 
 
-SCRIPT_DIR=$(dirname "$(realpath "$0")")
+#SCRIPT_DIR=$(dirname "$(realpath "$0")")
 
-cd /app
-unzip /tmp/catalogue.zip
+#cd /app
+#unzip /tmp/catalogue.zip
 
-cp catalogue.service /etc/systemd/system/catalogue.service
-validate $? "copying the catalogue service file"
+#cp catalogue.service /etc/systemd/system/catalogue.service
+#validate $? "copying the catalogue service file"
 
-systemctl daemon-reload
-systemctl enable catalogue
-systemctl start catalogue
-Validate $? "Starting catalogue"
+#systemctl daemon-reload
+#systemctl enable catalogue
+#systemctl start catalogue
+#validate $? "Starting catalogue"
 
-cp mongo.repo /etc/yum.repos.d/mongo.repo
-validate $? "copying mongodb repo file"
+#cp mongo.repo /etc/yum.repos.d/mongo.repo
+#validate $? "copying mongodb repo file"
 
-dnf install mongodb-mongosh -y
-validate $? "Installing mongodb mongosh"
+#dnf install mongodb-mongosh -y
+#validate $? "Installing mongodb mongosh"
 
-mongosh --host mongodb.$domain_name --quiet --eval 'db.getSiblingDB("catalogue").products.countDocuments()'
-if [$? -eq 0]; then
-    mongosh --host <MONGODB-SERVER-IPADDRESS> </app/db/master-data.js
-    validate $? "Loading the data"
-else 
-    echo -e "Products already added --- {Y}SKIPPED{N}"
-fi
+#mongosh --host mongodb.$domain_name --quiet --eval 'db.getSiblingDB("catalogue").products.countDocuments()'
+#if [$? -eq 0]; then
+#    mongosh --host <MONGODB-SERVER-IPADDRESS> </app/db/master-data.js
+#    validate $? "Loading the data"
+#else 
+#    echo -e "Products already added --- {Y}SKIPPED{N}"
+#fi
 
 echo "$(timestamp) [INFO] Script ended in $SECONDS seconds"
 echo "$(timestamp) [INFO] ========Script Execution Stopped==========" | tee -a $log_file
