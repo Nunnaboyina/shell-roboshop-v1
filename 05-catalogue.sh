@@ -8,6 +8,7 @@ G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
 domain_name="saidevops.shop"
+script_dir=$(dirname "$(realpath "$0")") 
 
 if [ $user_id -ne 0 ]; then
     echo "Please run the script with sudo access...."
@@ -37,29 +38,36 @@ dnf module enable nodejs:24 -y &>> $log_file
 dnf install nodejs -y &>> $log_file
 validate $? "Installing nodejs"
 
-id "roboshop" &>/dev/null
+id "roboshop" &>> $log_file
 if [ $? -eq 0 ]; then 
-    echo -e "$(timestamp) [INFO] System User already exists---${Y}SKIPPED${N}" | tee -a $log_file
+    echo -e "$(timestamp) [INFO] System roboshop User already exists---${Y}SKIPPED${N}"
 else
     useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>> $log_file
-    validate $? "Adding System User"
+    validate $? "Creating System User"
 fi
 
 
 #rm -rf /app
 mkdir -p /app 
+validate $? "Creating app directory"
+
 curl -L -o /tmp/catalogue.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/catalogue-v4.zip
 validate $? "Downloading Catalogue"
 
 
-#SCRIPT_DIR=$(dirname "$(realpath "$0")")
+
 
 cd /app
 unzip /tmp/catalogue.zip
 validate $? "unzipping the catalogue"
 
-#cp catalogue.service /etc/systemd/system/catalogue.service
-#validate $? "copying the catalogue service file"
+cd /app
+npm install
+validate $? "Installing dependencies"
+
+sed -i "s/DOMAIN_NAME/$domain_name/" "$script_dir/catalogue.service"
+cp $script_dir/catalogue.service /etc/systemd/system/catalogue.service
+validate $? "copying the catalogue service file"
 
 #systemctl daemon-reload
 #systemctl enable catalogue
