@@ -41,21 +41,22 @@ id "roboshop" &>/dev/null
 if [ $? -eq 0 ]; then 
     echo -e "$(timestamp) [INFO] System User already exists---${Y}SKIPPED${N}" | tee -a $log_file
 else
-    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
+    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>> $log_file
     validate $? "Adding System User"
 fi
 
 
 #rm -rf /app
-#mkdir -p /app
-#curl -L -o /tmp/catalogue.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/catalogue-v4.zip
-#validate $? "Downloading Catalogue"
+mkdir -p /app 
+curl -L -o /tmp/catalogue.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/catalogue-v4.zip
+validate $? "Downloading Catalogue"
 
 
 #SCRIPT_DIR=$(dirname "$(realpath "$0")")
 
-#cd /app
-#unzip /tmp/catalogue.zip
+cd /app
+unzip /tmp/catalogue.zip
+validate $? "unzipping the catalogue"
 
 #cp catalogue.service /etc/systemd/system/catalogue.service
 #validate $? "copying the catalogue service file"
