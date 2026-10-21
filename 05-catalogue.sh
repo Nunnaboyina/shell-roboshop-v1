@@ -73,5 +73,6 @@ validate $? "Installing nodejs"
 #    echo -e "Products already added --- {Y}SKIPPED{N}"
 #fi
 
+
 echo "$(timestamp) [INFO] Script ended in $SECONDS seconds"
 echo "$(timestamp) [INFO] ========Script Execution Stopped==========" | tee -a $log_file
