@@ -64,7 +64,7 @@ curl -L -o /tmp/shipping.zip https://raw.githubusercontent.com/daws-92s/roboshop
 validate $? "Downloading shipping"
 
 cd /app
-unzip /tmp/shipping.zip
+unzip /tmp/shipping.zip &>> $log_file
 validate $? "unzipping shipping"
 
 mvn clean package &>> $log_file
@@ -89,7 +89,7 @@ else
 fi
 
 mysql -h mysql.$domain_name -uroot -pRoboShop@1 < /app/db/app-user.sql &>> $log_file
-validate $? ""
+validate $? " Creating APP user "
 
 
 systemctl daemon-reload &>> $log_file
