@@ -64,7 +64,7 @@ python3.14 -m venv /app/.venv &>> $log_file
 /app/.venv/bin/pip install -r requirements.txt &>> $log_file
 validate $? "Installing python dependencies"
 
-sed -i "/s/DOMAIN_NAME/$domain_name/g" "$script_dir/payment.service" 
+sed -i "s/DOMAIN_NAME/$domain_name/" "$script_dir/payment.service" 
 cp payment.service /etc/systemd/system/payment.service &>> $log_file
 validate $? "Copying the payment service file"
 
