@@ -47,22 +47,20 @@ else
 fi
 
 
-#rm -rf /app
+rm -rf /app
 mkdir -p /app 
 validate $? "Creating app directory"
 
-curl -L -o /tmp/catalogue.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/catalogue-v4.zip
+curl -L -o /tmp/catalogue.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/catalogue-v4.zip &>> $log_file
 validate $? "Downloading Catalogue"
-
-
 
 
 cd /app
 unzip /tmp/catalogue.zip
 validate $? "unzipping the catalogue"
 
-cd /app
-npm install
+
+npm install &>> $log_file
 validate $? "Installing dependencies"
 
 sed -i "s/DOMAIN_NAME/$domain_name/" "$script_dir/catalogue.service"
