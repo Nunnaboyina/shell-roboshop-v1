@@ -64,7 +64,7 @@ npm install &>> $log_file
 validate $? "Installing dependencies"
 
 sed -i "s/DOMAIN_NAME/$domain_name/" "$script_dir/user.service"
-cp $script_dir/user.service /etc/systemd/system/user.service
+cp $script_dir/user.service /etc/systemd/system/user.service &>> $log_file
 validate $? "copying the user service file"
 
 systemctl daemon-reload &>> $log_file
