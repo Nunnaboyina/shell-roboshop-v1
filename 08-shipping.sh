@@ -73,6 +73,10 @@ validate $? "Installing dependencies"
 mv target/shipping.jar shipping.jar &>> $log_file
 validate $? "Moving shipping jar files"
 
+sed -i "s/DOMAIN_NAME/$domain_name/" "$script_dir/shipping.service"
+cp "$script_dir/shipping.service" /etc/systemd/system/shipping.service &>> $log_file
+validate $? "Copying the service file"
+
 dnf install mysql -y &>> $log_file
 validate $? "Installing mysql client"
 
@@ -81,7 +85,7 @@ if [ -z "$count" ] || [ "$count" -eq 0 ]; then
      mysql -h "mysql.$domain_name" -uroot -pRoboShop@1 < /app/db/master-data.sql &>> $log_file
      validate $? "Loading shipping data"
 else
-    echo "$(timestamp) [INFO] Shipping data already exist...${Y}SKIPPINNG${N}"
+    echo -e "$(timestamp) [INFO] Shipping data already exist...${Y}SKIPPINNG${N}"
 
 #mysql -h mysql.$domain_name -uroot -pRoboShop@1 < /app/db/app-user.sql &>> $log_file
 #validate $? ""
