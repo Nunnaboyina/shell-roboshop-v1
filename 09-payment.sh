@@ -65,7 +65,7 @@ python3.14 -m venv /app/.venv &>> $log_file
 validate $? "Installing python dependencies"
 
 sed -i "s/DOMAIN_NAME/$domain_name/" "$script_dir/payment.service" 
-cp payment.service /etc/systemd/system/payment.service &>> $log_file
+cp "$script_dir/payment.service" /etc/systemd/system/payment.service &>> $log_file
 validate $? "Copying the payment service file"
 
 systemctl daemon-reload &>> $log_file
