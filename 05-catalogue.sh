@@ -78,14 +78,17 @@ validate $? "copying mongodb repo file"
 dnf install mongodb-mongosh -y &>> $log_file
 validate $? "Installing mongodb mongosh"
 
-#mongosh --host mongodb.$domain_name --quiet --eval 'db.getSiblingDB("catalogue").products.countDocuments()'
-#if [$? -eq 0]; then
-#    mongosh --host <MONGODB-SERVER-IPADDRESS> </app/db/master-data.js
-#    validate $? "Loading the data"
-#else 
-#    echo -e "Products already added --- {Y}SKIPPED{N}"
-#fi
+product_count=$(mongosh --host mongodb.$domain_name --quiet --eval 'db.getSiblingDB("catalogue").products.countDocuments()' 2>> $log_file)
+validate $? "Connecting to mongodb to check for products count"
+if ["$product_count" -eq 0]; then
+    mongosh --host <MONGODB-SERVER-IPADDRESS> </app/db/master-data.js &>> $log_file
+    validate $? "Loading products"
+else 
+    echo -e "$(timestamp) [INFO] Products already added --- ${Y}SKIPPED${N}"
+fi
 
+systemctl restart catalogue &>> $log_file
+validate $? "Restart catalogue"
 
 echo "$(timestamp) [INFO] Script ended in $SECONDS seconds"
 echo "$(timestamp) [INFO] ========Script Execution Stopped==========" | tee -a $log_file
