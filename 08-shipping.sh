@@ -40,9 +40,9 @@ validate $? "Installing Java and maven"
 alternatives --set java /usr/lib/jvm/java-25-openjdk/bin/java &>> $log_file
 validate $? "setting Java 25 as default version"
 
-echo "export JAVA_HOME=$(dirname $(dirname $(readlink -f /usr/bin/java)))" > /etc/profile.d/java.sh &>> $log_file
+echo "export JAVA_HOME=$(dirname $(dirname $(readlink -f /usr/bin/java)))" > /etc/profile.d/java.sh
 source /etc/profile.d/java.sh &>> $log_file
-echo $JAVA_HOME &>> $log_file
+echo $JAVA_HOME  &>> $log_file
 validate $? "Setting JAVA_HOME for maven"
 
 id "roboshop"
