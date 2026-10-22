@@ -73,8 +73,8 @@ validate $? "Installing dependencies"
 mv target/shipping.jar shipping.jar &>> $log_file
 validate $? "Moving shipping jar files"
 
-#dnf install mysql -y &>> $log_file
-#validate $? "Installing mysql client"
+dnf install mysql -y &>> $log_file
+validate $? "Installing mysql client"
 
 #count=$(mysql -h "myslq.$domain_name" -u root -pRoboShop@1 -NB -e "SELECT COUNT(*) FROM cities.cities;" 2>> $log_file)
 #if [ -z "$count" ] || [ "$count" -eq 0 ]; then
