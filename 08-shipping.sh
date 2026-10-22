@@ -87,12 +87,10 @@ if [ -z "$count" ] || [ "$count" -eq 0 ]; then
 else
     echo -e "$(timestamp) [INFO] Shipping data already exist...${Y}SKIPPINNG${N}"
 fi
-#mysql -h mysql.$domain_name -uroot -pRoboShop@1 < /app/db/app-user.sql &>> $log_file
-#validate $? ""
 
-#sed -i "s/DOMAIN_NAME/$domain_name/" "$script_dir/shipping.service"
-#cp "$script_dir/shipping.service" /etc/systemd/system/shipping.service &>> $log_file
-#validate $? "Copying the service file"
+mysql -h mysql.$domain_name -uroot -pRoboShop@1 < /app/db/app-user.sql &>> $log_file
+validate $? ""
+
 
 systemctl daemon-reload &>> $log_file
 systemctl enable shipping &>> $log_file
