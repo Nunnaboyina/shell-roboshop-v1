@@ -45,6 +45,7 @@ if [ $? -ne 0 ]; then
     validate $? "Creating roboshop system user"
 else 
     echo -e "$(timestamp) [INFO] Roboshop user already exist----${Y}SKIPPING${N}"
+fi
 
 rm -rf /app
 validate $? "removing old app directory"
