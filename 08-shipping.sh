@@ -37,7 +37,7 @@ dnf module enable maven:3.9 -y &>> $log_file
 dnf install maven java-25-openjdk-devel -y &>> $log_file
 validate $? "Installing Java and maven"
 
-alternatives --set java lib/jvm/java-25-openjdk/bin/java &>> $log_file
+alternatives --set java /usr/lib/jvm/java-25-openjdk/bin/java &>> $log_file
 validate $? "setting Java 25 as default version"
 
 echo "export JAVA_HOME=$(dirname $(dirname $(readlink -f /usr/bin/java)))" > /etc/profile.d/java.sh &>> $log_file
