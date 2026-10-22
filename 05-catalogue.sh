@@ -67,16 +67,16 @@ sed -i "s/DOMAIN_NAME/$domain_name/" "$script_dir/catalogue.service"
 cp $script_dir/catalogue.service /etc/systemd/system/catalogue.service
 validate $? "copying the catalogue service file"
 
-#systemctl daemon-reload
-#systemctl enable catalogue
-#systemctl start catalogue
-#validate $? "Starting catalogue"
+systemctl daemon-reload &>> $log_file
+systemctl enable catalogue &>> $log_file
+systemctl start catalogue &>> $log_file
+validate $? "Starting catalogue"
 
-#cp mongo.repo /etc/yum.repos.d/mongo.repo
-#validate $? "copying mongodb repo file"
+cp mongo.repo /etc/yum.repos.d/mongo.repo &>> $log_file
+validate $? "copying mongodb repo file"
 
-#dnf install mongodb-mongosh -y
-#validate $? "Installing mongodb mongosh"
+dnf install mongodb-mongosh -y &>> $log_file
+validate $? "Installing mongodb mongosh"
 
 #mongosh --host mongodb.$domain_name --quiet --eval 'db.getSiblingDB("catalogue").products.countDocuments()'
 #if [$? -eq 0]; then
