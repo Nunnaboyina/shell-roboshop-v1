@@ -76,12 +76,12 @@ validate $? "Moving shipping jar files"
 dnf install mysql -y &>> $log_file
 validate $? "Installing mysql client"
 
-#count=$(mysql -h "myslq.$domain_name" -u root -pRoboShop@1 -NB -e "SELECT COUNT(*) FROM cities.cities;" 2>> $log_file)
-#if [ -z "$count" ] || [ "$count" -eq 0 ]; then
-#    mysql -h "mysql.$domain_name" -uroot -pRoboShop@1 < /app/db/master-data.sql &>> $log_file
-#    validate $? "Loading shipping data"
-#else
-#    echo "$(timestamp) [INFO] Shipping data already exist...${Y}SKIPPINNG${N}"
+count=$(mysql -h "mysql.$domain_name" -u root -pRoboShop@1 -NB -e "SELECT COUNT(*) FROM cities.cities;" 2>> $log_file)
+if [ -z "$count" ] || [ "$count" -eq 0 ]; then
+     mysql -h "mysql.$domain_name" -uroot -pRoboShop@1 < /app/db/master-data.sql &>> $log_file
+     validate $? "Loading shipping data"
+else
+    echo "$(timestamp) [INFO] Shipping data already exist...${Y}SKIPPINNG${N}"
 
 #mysql -h mysql.$domain_name -uroot -pRoboShop@1 < /app/db/app-user.sql &>> $log_file
 #validate $? ""
@@ -93,7 +93,10 @@ validate $? "Installing mysql client"
 systemctl daemon-reload &>> $log_file
 systemctl enable shipping &>> $log_file
 systemctl start shipping &>> $log_file
-validate $? "Restarting shipping"
+validate $? "Starting and enabling shipping"
+
+systemctl restart shipping
+validate $? "Restart Shipping"
 
 
 echo "$(timestamp) [INFO] Script ended in $SECONDS seconds"
