@@ -61,7 +61,7 @@ validate $? "Unzipping payment"
 
 python3.14 -m venv /app/.venv &>> $log_file
 /app/.venv/bin/pip install -r requirements.txt &>> $log_file
-validate $? "Installing python"
+validate $? "Installing python dependencies"
 
 sed -i "/s/DOMAIN_NAME/$domain_name/g" "$script_dir/payment.service" 
 cp payment.service /etc/systemd/system/payment.service &>> $log_file
@@ -70,7 +70,7 @@ validate $? "Copying the payment service file"
 systemctl daemon-reload &>> $log_file
 systemctl enable payment &>> $log_file
 systemctl start payment &>> $log_file
-validate $? "Restart the payment"
+validate $? "Enable and Restart the payment"
 
 echo "$(timestamp) [INFO] Script ended in $SECONDS seconds"
 echo "$(timestamp) [INFO] ========Script Execution Stopped==========" | tee -a $log_file
