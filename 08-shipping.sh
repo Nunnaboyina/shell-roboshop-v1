@@ -86,7 +86,7 @@ if [ -z "$count" ] || [ "$count" -eq 0 ]; then
      validate $? "Loading shipping data"
 else
     echo -e "$(timestamp) [INFO] Shipping data already exist...${Y}SKIPPINNG${N}"
-
+fi
 #mysql -h mysql.$domain_name -uroot -pRoboShop@1 < /app/db/app-user.sql &>> $log_file
 #validate $? ""
 
